@@ -28,8 +28,12 @@ function renderSessions() {
   logs.forEach((entry, index) => {
     const li = document.createElement("li");
     li.className = "session-entry";
-    li.innerHTML = `<strong>${entry.date}</strong><br>${entry.goal}`;
-    list.appendChild(li);
+    li.innerHTML = `
+  <strong>${entry.date}</strong><br>
+  🧠 <em>${entry.goal}</em><br>
+  Mood: ${entry.mood} / 5 &nbsp;&nbsp; Energy: ${entry.energy} / 5
+`;
+ list.appendChild(li);
   });
 }
 
