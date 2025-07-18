@@ -141,3 +141,39 @@ function estimateCalories() {
 ["sessionType", "duration", "weight"].forEach(id => {
   document.getElementById(id).addEventListener("input", estimateCalories);
 });
+document.getElementById("saveSession").addEventListener("click", function () {
+  const type = document.getElementById("sessionType").value;
+  const duration = parseFloat(document.getElementById("duration").value) || 0;
+  const weight = parseFloat(document.getElementById("weight").value) || 0;
+  const calories = document.getElementById("caloriesOutput").textContent;
+  const date = new Date().toLocaleString();
+
+  if (!duration || !weight) {
+    alert("Please enter both duration and weight.");
+    return;
+  }
+
+  const sessionItem = document.createElement("div");
+  sessionItem.className = "bg-white bg-opacity-60 rounded p-3 mb-2 shadow";
+  sessionItem.innerHTML = `
+    <p><strong>${type}</strong> - ${duration} min, ${weight} kg</p>
+    <p><span class="text-green-600 font-semibold">${calories} kcal</span> burned on ${date}</p>
+  `;
+
+  const history = document.getElementById("sessionHistory") || createSessionHistory();
+  history.prepend(sessionItem);
+
+  // Reset fields
+  document.getElementById("duration").value = "";
+  document.getElementById("weight").value = "";
+  document.getElementById("caloriesOutput").textContent = "0";
+});
+
+function createSessionHistory() {
+  const container = document.createElement("div");
+  container.id = "sessionHistory";
+  container.className = "mt-6 bg-white bg-opacity-70 rounded-2xl shadow-xl p-4";
+  container.innerHTML = `<h2 class="text-xl font-bold mb-3">📚 Session History</h2>`;
+  document.body.appendChild(container);
+  return container;
+}
