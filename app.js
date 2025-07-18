@@ -117,3 +117,27 @@ window.onload = () => {
   renderSessions();
   updateChart(logs);
 };
+function estimateCalories() {
+  const duration = parseFloat(document.getElementById("duration").value) || 0;
+  const weight = parseFloat(document.getElementById("weight").value) || 0;
+  const type = document.getElementById("sessionType").value;
+
+  // MET values based on activity
+  const METS = {
+    "Running": 9.8,
+    "Gym Workout": 6.0,
+    "HIIT": 8.0,
+    "Yoga/Recovery": 3.0
+  };
+
+  const met = METS[type] || 6.0;
+  const durationInHours = duration / 60;
+  const calories = (met * weight * durationInHours).toFixed(1);
+
+  document.getElementById("caloriesOutput").textContent = isNaN(calories) ? "0" : calories;
+}
+
+// Add event listeners
+["sessionType", "duration", "weight"].forEach(id => {
+  document.getElementById(id).addEventListener("input", estimateCalories);
+});
