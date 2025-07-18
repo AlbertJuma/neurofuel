@@ -1,37 +1,45 @@
+/* Reset & Base */
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background: url('bg.png') no-repeat center center fixed;
   background-size: cover;
-  color: #000000; /* Optional: Adjust text color for readability */
-}
-.container {
-  background-color: rgba(255, 255, 255, 0.85); /* Soft white glass effect */
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 12px;
-  max-width: 800px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  color: #000;
 }
 
+/* Container with soft glass effect */
+.container {
+  background-color: rgba(255, 255, 255, 0.85); /* Light glassy */
+  padding: 24px;
+  margin: 40px auto;
+  border-radius: 16px;
+  max-width: 800px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+}
+
+/* Headings with glow */
 h1, h2, h3 {
   color: #facc15;
-  margin-top: 20px;
+  text-shadow: 0 0 5px #facc15aa;
+  margin-top: 24px;
 }
 
+/* Text input areas */
 textarea, input[type="range"] {
   width: 100%;
   padding: 12px;
-  margin: 8px 0 20px;
+  margin: 12px 0 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #2a2a2a;
   color: #fff;
   font-size: 16px;
-  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+/* Button styles */
 button {
   background-color: #facc15;
   color: #000;
@@ -42,43 +50,58 @@ button {
   font-weight: bold;
   font-size: 16px;
   transition: background 0.3s ease;
-  margin-top: 10px;
 }
 
 button:hover {
   background-color: #eab308;
 }
 
+/* Canvas styling */
 canvas {
   background-color: #1e1e1e;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
+/* Audio bar styling */
 audio {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 16px;
   background-color: #2a2a2a;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
+/* Session entries */
 .session-entry {
   background: #1e1e1e;
+  color: #fff;
   border-left: 4px solid #facc15;
-  padding: 12px;
-  margin: 12px 0;
-  border-radius: 10px;
-  color: #e0e0e0;
+  padding: 14px;
+  margin: 14px 0;
+  border-radius: 12px;
+  animation: fadeInUp 0.3s ease forwards;
+  opacity: 0;
+  transform: translateY(10px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+/* Horizontal rule */
 hr {
   border: none;
-  border-top: 1px solid #333;
+  border-top: 1px solid #ccc;
   margin: 40px 0;
 }
 
-/* Make it mobile friendly */
+/* Animation */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
 @media (max-width: 480px) {
   body {
     padding: 15px;
@@ -87,32 +110,9 @@ hr {
   button {
     width: 100%;
   }
-}
-/* Style for each saved session entry */
-.session-entry {
-  background: #1e1e1e;
-  color: #fff;
-  border-left: 4px solid #facc15; /* bright yellow */
-  padding: 12px;
-  margin: 12px 0;
-  border-radius: 10px;
-  animation: fadeInUp 0.3s ease forwards;
-  opacity: 0;
-  transform: translateY(10px);
-}
 
-/* Fade-in animation */
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .container {
+    margin: 20px 10px;
+    padding: 16px;
   }
 }
-
-/* Style enhancements for inputs */
-textarea,
-input[type="range"],
-.session-entry {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-}
-
