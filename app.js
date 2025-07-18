@@ -38,3 +38,37 @@ function renderSessions() {
 }
 
 window.onload = renderSessions;
+let mediaRecorder;
+let audioChunks = [];
+
+const recordBtn = document.getElementById("recordBtn");
+const audioPlayback = document.getElementById("audioPlayback");
+
+recordBtn.addEventListener("click", async () => {
+  if (recordBtn.innerText === "Start Recording") {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.start();
+    audioChunks = [];
+
+    mediaRecorder.addEventListener("dataavailable", event => {
+      audioChunks.push(event.data);
+    });
+
+    mediaRecorder.addEventListener("stop", () => {
+      const audioBlob = new Blob(audioChunks);
+      const audioUrl = URL.createObjectURL(audioBlob);
+      audioPlayback.src = audioUrl;
+      audioPlayback.style.display = "block";
+
+      // Save audio blob in memory as base64 string (for now)
+      sessionAudio = audioUrl;
+    });
+
+    recordBtn.innerText = "Stop Recording";
+  } else {
+    mediaRecorder.stop();
+    recordBtn.innerText = "Start Recording";
+  }
+});
+
