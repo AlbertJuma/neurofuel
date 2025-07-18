@@ -2,67 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroFuel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🏃 NeuroFuel - Training Tracker</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <h1>🏃 NeuroFuel</h1>
 
-    <div id="input-section">
-      <h2>What's your training goal?</h2>
-      <textarea id="goalInput" placeholder="e.g. Improve sprint start..."></textarea>
+    <h2>What's your training goal?</h2>
+    <input type="text" id="goal" placeholder="e.g. sprinting training" />
+    
+    <h3>Progress Tracker</h3>
+    
+    <label for="mood">Mood Level (1 = bad, 5 = great)</label>
+    <input type="range" id="mood" min="1" max="5" value="3" />
+    <span id="mood-value">3</span>
 
-      <h2>Progress Tracker</h2>
-      <canvas id="progressChart"></canvas>
+    <label for="energy">Energy Level (1 = low, 5 = high)</label>
+    <input type="range" id="energy" min="1" max="5" value="3" />
+    <span id="energy-value">3</span>
 
-      <h3>Mood Level (1 = bad, 5 = great)</h3>
-      <input type="range" min="1" max="5" value="3" id="moodSlider" />
+    <h3>🎤 Record Voice Note:</h3>
+    <button id="record-btn">Start Recording</button>
 
-      <h3>Energy Level (1 = low, 5 = high)</h3>
-      <input type="range" min="1" max="5" value="3" id="energySlider" />
+    <br><br>
+    <button id="save-session">💾 Save Session</button>
 
-      <label for="voiceNote">🎤 Record Voice Note:</label><br />
-      <button id="recordBtn">Start Recording</button><br />
-      <audio id="audioPlayback" controls style="display:none;"></audio>
+    <h3>🕓 Session Timeline</h3>
+    <ul id="timeline"></ul>
 
-      <button onclick="saveGoal()">Save Session</button>
-    </div>
+    <h3>🔥 Estimate Calories Burned</h3>
+    <label for="session-type">Session Type:</label>
+    <select id="session-type">
+      <option value="Running">Running</option>
+      <option value="Walking">Walking</option>
+      <option value="Cycling">Cycling</option>
+    </select>
 
-    <hr />
+    <label for="duration">Duration (minutes):</label>
+    <input type="number" id="duration" placeholder="e.g. 45" />
 
-    <div id="timeline-section">
-      <h2>🕓 Session Timeline</h2>
-      <ul id="sessionList"></ul>
-    </div>
+    <label for="weight">Your Weight (kg):</label>
+    <input type="number" id="weight" placeholder="e.g. 70" />
 
-    <hr />
-
-    <div id="calorieSection">
-      <h2>🔥 Estimate Calories Burned</h2>
-      <label>Session Type:</label>
-      <select id="sessionType">
-        <option>Running</option>
-        <option>Gym Workout</option>
-        <option>HIIT</option>
-        <option>Yoga/Recovery</option>
-      </select>
-
-      <label>Duration (minutes):</label>
-      <input type="number" id="duration" />
-
-      <label>Your Weight (kg):</label>
-      <input type="number" id="weight" />
-
-      <p><strong>Estimated Calories:</strong> <span id="caloriesOutput">0</span> kcal</p>
-
-      <button id="saveSession">Save Calorie Session</button>
-    </div>
-
-    <div id="sessionHistory"></div>
+    <p>Estimated Calories: <span id="calories">0</span> kcal</p>
+    <button id="save-calorie">💾 Save Calorie Session</button>
   </div>
 
   <script src="app.js"></script>
