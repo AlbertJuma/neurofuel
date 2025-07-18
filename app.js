@@ -1,10 +1,15 @@
 function saveGoal() {
   const input = document.getElementById("goalInput").value.trim();
+  const mood = document.getElementById("moodSlider").value;
+  const energy = document.getElementById("energySlider").value;
+
   if (!input) return alert("Write something!");
 
   const session = {
     goal: input,
     date: new Date().toLocaleString(),
+    mood: mood,
+    energy: energy,
   };
 
   let logs = JSON.parse(localStorage.getItem("neuroSessions")) || [];
