@@ -1,99 +1,77 @@
-// Load existing sessions or initialize
-const savedSessions = JSON.parse(localStorage.getItem("calorieSessions")) || [];
-
-// On page load, populate saved calorie sessions
-window.addEventListener("DOMContentLoaded", () => {
-  const history = document.getElementById("sessionHistory");
-  savedSessions.forEach(sess => {
-    const sessionItem = document.createElement("div");
-    sessionItem.className = "bg-white bg-opacity-60 rounded p-3 mb-2 shadow";
-    sessionItem.innerHTML = `
-      <p><strong>${sess.type}</strong> - ${sess.duration} min, ${sess.weight} kg</p>
-      <p><span class="text-green-600 font-semibold">${sess.calories} kcal</span> burned on ${sess.date}</p>
-    `;
-    history.appendChild(sessionItem);
-  });
-});
-
-// Goal Tracking Save
-document.getElementById("saveGoal").addEventListener("click", () => {
-  const goal = document.getElementById("goalInput").value;
-  document.getElementById("goalOutput").textContent = goal ? `🎯 ${goal}` : "No goal set";
-});
-
-// Mood & Energy Sliders
-document.getElementById("moodSlider").addEventListener("input", e => {
-  document.getElementById("moodValue").textContent = e.target.value;
-});
-document.getElementById("energySlider").addEventListener("input", e => {
-  document.getElementById("energyValue").textContent = e.target.value;
-});
-
-// Voice Note Recorder
-let mediaRecorder;
-let audioChunks = [];
-
-document.getElementById("startRecord").addEventListener("click", async () => {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  mediaRecorder = new MediaRecorder(stream);
-  mediaRecorder.start();
-  audioChunks = [];
-
-  mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
-
-  mediaRecorder.onstop = () => {
-    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-    const audioUrl = URL.createObjectURL(audioBlob);
-    const audio = new Audio(audioUrl);
-    audio.controls = true;
-    document.getElementById("voiceOutput").innerHTML = "";
-    document.getElementById("voiceOutput").appendChild(audio);
-  };
-});
-
-document.getElementById("stopRecord").addEventListener("click", () => {
-  if (mediaRecorder && mediaRecorder.state === "recording") {
-    mediaRecorder.stop();
+// Chart.js progress chart setup
+let moodData = [];
+let energyData = [];
+let sessionLabels = [];
+const ctx = document.getElementById('progressChart').getContext('2d');
+const progressChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: sessionLabels,
+    datasets: [
+      {
+        label: 'Mood',
+        data: moodData,
+        borderColor: '#ff6384',
+        fill: false
+      },
+      {
+        label: 'Energy',
+        data: energyData,
+        borderColor: '#36a2eb',
+        fill: false
+      }
+    ]
   }
 });
 
-// Calorie Burn Calculator
-document.getElementById("saveSession").addEventListener("click", () => {
-  const type = document.getElementById("activityType").value;
-  const duration = parseFloat(document.getElementById("activityDuration").value);
-  const weight = parseFloat(document.getElementById("userWeight").value);
+// Save training session
+function saveGoal() {
+  const goal = document.getElementById('goalInput').value;
+  const mood = document.getElementById('moodSlider').value;
+  const energy = document.getElementById('energySlider').value;
 
-  if (!type || isNaN(duration) || isNaN(weight)) {
-    alert("Please fill all fields correctly.");
+  const session = {
+    goal,
+    mood,
+    energy,
+    time: new Date().toLocaleTimeString()
+  };
+
+  const sessionList = document.getElementById('sessionList');
+  const item = document.createElement('li');
+  item.textContent = `Goal: ${goal}, Mood: ${mood}, Energy: ${energy} (${session.time})`;
+  sessionList.appendChild(item);
+
+  // Update chart
+  sessionLabels.push(session.time);
+  moodData.push(mood);
+  energyData.push(energy);
+  progressChart.update();
+}
+
+// Calorie calculator
+document.getElementById("saveSession").addEventListener("click", () => {
+  const type = document.getElementById("sessionType").value;
+  const duration = parseFloat(document.getElementById("duration").value);
+  const weight = parseFloat(document.getElementById("weight").value);
+
+  if (isNaN(duration) || isNaN(weight)) {
+    alert("Please enter valid numbers for duration and weight.");
     return;
   }
 
-  const METS = {
-    walking: 3.5,
-    running: 7.5,
-    cycling: 6.8,
-    yoga: 2.5,
-    swimming: 8.0
-  };
+  let met = 8; // default for running
+  switch (type) {
+    case "Gym Workout": met = 6; break;
+    case "HIIT": met = 10; break;
+    case "Yoga/Recovery": met = 3; break;
+  }
 
-  const mets = METS[type];
-  const calories = ((mets * 3.5 * weight) / 200) * duration;
-  const date = new Date().toLocaleString();
+  const calories = Math.round((met * 3.5 * weight / 200) * duration);
+  document.getElementById("caloriesOutput").textContent = calories;
 
-  document.getElementById("calorieOutput").textContent = `🔥 ${calories.toFixed(2)} kcal`;
-
-  // Save session
-  const session = { type, duration, weight, calories: calories.toFixed(2), date };
-  savedSessions.push(session);
-  localStorage.setItem("calorieSessions", JSON.stringify(savedSessions));
-
-  // Add to history
   const history = document.getElementById("sessionHistory");
-  const sessionItem = document.createElement("div");
-  sessionItem.className = "bg-white bg-opacity-60 rounded p-3 mb-2 shadow";
-  sessionItem.innerHTML = `
-    <p><strong>${type}</strong> - ${duration} min, ${weight} kg</p>
-    <p><span class="text-green-600 font-semibold">${calories.toFixed(2)} kcal</span> burned on ${date}</p>
-  `;
-  history.appendChild(sessionItem);
+  const entry = document.createElement("p");
+  entry.textContent = `${type} | ${duration} mins | ${weight} kg → 🔥 ${calories} kcal`;
+  history.appendChild(entry);
 });
