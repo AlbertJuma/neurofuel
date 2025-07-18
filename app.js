@@ -6,11 +6,13 @@ function saveGoal() {
   if (!input) return alert("Write something!");
 
   const session = {
-    goal: input,
-    date: new Date().toLocaleString(),
-    mood: mood,
-    energy: energy,
-  };
+  date: new Date().toLocaleString(),
+  goal,
+  mood,
+  energy,
+  audio: audioPlayback.src || null,
+};
+
 
   let logs = JSON.parse(localStorage.getItem("neuroSessions")) || [];
   logs.unshift(session); // newest first
@@ -33,7 +35,13 @@ function renderSessions() {
   🧠 <em>${entry.goal}</em><br>
   Mood: ${entry.mood} / 5 &nbsp;&nbsp; Energy: ${entry.energy} / 5
 `;
- list.appendChild(li);
+ if (entry.audio) {
+  li.innerHTML += `<br><audio controls src="${entry.audio}"></audio>`;
+}
+
+    
+    
+    list.appendChild(li);
   });
 }
 
