@@ -9,17 +9,24 @@
 <body>
   <div class="container">
     <h1>🏃 NeuroFuel</h1>
+<div id="input-section">
+  <h2>What's your training goal?</h2>
+  <textarea id="goalInput" placeholder="e.g. Improve sprint start..."></textarea>
 
-    <div id="input-section">
-      <h2>What's your training goal?</h2>
-      <textarea id="goalInput" placeholder="e.g. Improve sprint start..."></textarea>
-      <h3>Mood Level (1 = bad, 5 = great)</h3>
-<input type="range" min="1" max="5" value="3" id="moodSlider" />
+  <h3>Mood Level (1 = bad, 5 = great)</h3>
+  <input type="range" min="1" max="5" value="3" id="moodSlider" />
 
-<h3>Energy Level (1 = low, 5 = high)</h3>
-<input type="range" min="1" max="5" value="3" id="energySlider" />
- <button onclick="saveGoal()">Save Session</button>
-    </div>
+  <h3>Energy Level (1 = low, 5 = high)</h3>
+  <input type="range" min="1" max="5" value="3" id="energySlider" />
+
+  <!-- 🎤 Voice Recording Section -->
+  <label for="voiceNote">🎤 Record Voice Note:</label><br>
+  <button id="recordBtn">Start Recording</button><br>
+  <audio id="audioPlayback" controls style="display:none;"></audio>
+
+  <!-- ✅ Save button -->
+  <button onclick="saveGoal()">Save Session</button>
+</div>
 
     <hr />
 
