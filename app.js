@@ -127,3 +127,98 @@ document.getElementById("recordBtn").addEventListener("click", async () => {
 
 // Initialize chart on page load
 window.onload = initChart;
+
+// DOM Elements
+const goalInput = document.getElementById('goal-input');
+const saveGoalBtn = document.getElementById('save-goal-btn');
+const goalDisplay = document.getElementById('goal-display');
+
+const moodInput = document.getElementById('mood-level');
+const energyInput = document.getElementById('energy-level');
+const recordBtn = document.getElementById('record-btn');
+const saveSessionBtn = document.getElementById('save-session-btn');
+const timelineList = document.getElementById('timeline-list');
+
+const sessionType = document.getElementById('session-type');
+const durationInput = document.getElementById('duration');
+const weightInput = document.getElementById('weight');
+const calcBtn = document.getElementById('calc-btn');
+const calorieOutput = document.getElementById('calorie-output');
+const saveCalorieBtn = document.getElementById('save-calorie-btn');
+
+// Save training goal
+saveGoalBtn.addEventListener('click', () => {
+  const goal = goalInput.value.trim();
+  if (goal) {
+    goalDisplay.textContent = goal;
+    localStorage.setItem('trainingGoal', goal);
+    goalInput.value = '';
+  }
+});
+
+// Load goal if saved
+window.addEventListener('DOMContentLoaded', () => {
+  const savedGoal = localStorage.getItem('trainingGoal');
+  if (savedGoal) {
+    goalDisplay.textContent = savedGoal;
+  }
+});
+
+// Save progress session
+saveSessionBtn.addEventListener('click', () => {
+  const mood = moodInput.value;
+  const energy = energyInput.value;
+  const timestamp = new Date().toLocaleString();
+
+  const entry = `🕒 ${timestamp} - Mood: ${mood}, Energy: ${energy}`;
+  const li = document.createElement('li');
+  li.textContent = entry;
+  timelineList.appendChild(li);
+
+  // Optional: Save to localStorage
+  const sessions = JSON.parse(localStorage.getItem('sessions') || '[]');
+  sessions.push(entry);
+  localStorage.setItem('sessions', JSON.stringify(sessions));
+});
+
+// Load session timeline
+window.addEventListener('DOMContentLoaded', () => {
+  const sessions = JSON.parse(localStorage.getItem('sessions') || '[]');
+  sessions.forEach(entry => {
+    const li = document.createElement('li');
+    li.textContent = entry;
+    timelineList.appendChild(li);
+  });
+});
+
+// Calculate calories
+calcBtn.addEventListener('click', () => {
+  const type = sessionType.value;
+  const duration = parseFloat(durationInput.value);
+  const weight = parseFloat(weightInput.value);
+
+  if (!duration || !weight) {
+    calorieOutput.textContent = 'Please enter valid values';
+    return;
+  }
+
+  let met = 0;
+  switch (type) {
+    case 'Running': met = 9.8; break;
+    case 'Cycling': met = 7.5; break;
+    case 'Walking': met = 3.5; break;
+    default: met = 5.0;
+  }
+
+  const calories = ((met * 3.5 * weight) / 200) * duration;
+  calorieOutput.textContent = `${Math.round(calories)} kcal`;
+});
+
+// Save calorie session
+saveCalorieBtn.addEventListener('click', () => {
+  const text = `🔥 ${new Date().toLocaleString()} - ${calorieOutput.textContent}`;
+  const li = document.createElement('li');
+  li.textContent = text;
+  timelineList.appendChild(li);
+});
+
