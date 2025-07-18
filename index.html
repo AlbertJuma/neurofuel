@@ -1,95 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Training Tracker</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neurofuel Tracker</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 1rem;
-      background: #f0f4f8;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f6fa;
       color: #333;
     }
-    h1, h2 {
+
+    h1 {
       text-align: center;
+      color: #2f3640;
     }
+
     .section {
-      background: #fff;
-      border-radius: 10px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
+
     label {
+      font-weight: bold;
       display: block;
-      margin-top: 0.5rem;
+      margin-top: 10px;
     }
+
     input, select, button {
-      margin-top: 0.3rem;
       width: 100%;
-      padding: 0.5rem;
-      font-size: 1rem;
-      border-radius: 5px;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
       border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
     }
-    input[type=range] {
-      width: 100%;
-    }
+
     button {
-      background: #007bff;
+      background-color: #0984e3;
       color: white;
       border: none;
       cursor: pointer;
+      transition: background 0.2s;
     }
+
     button:hover {
-      background: #0056b3;
+      background-color: #74b9ff;
     }
+
+    .sliders {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .sliders div {
+      flex: 1;
+    }
+
     ul {
-      padding-left: 1.5rem;
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    li {
+      background: #dfe6e9;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .small-label {
+      font-size: 0.9rem;
+      color: #636e72;
+    }
+
+    @media (max-width: 600px) {
+      .sliders {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-
-  <h1>Training & Mood Tracker</h1>
+  <h1>Neurofuel Tracker</h1>
 
   <div class="section">
-    <h2>Mood & Energy</h2>
-    <label>Mood: <span id="mood-value">3</span></label>
-    <input type="range" id="mood" min="1" max="5" value="3">
+    <label for="goal">Today's Training Goal</label>
+    <input type="text" id="goal" placeholder="e.g. Improve focus, complete project, etc." />
 
-    <label>Energy: <span id="energy-value">3</span></label>
-    <input type="range" id="energy" min="1" max="5" value="3">
+    <div class="sliders">
+      <div>
+        <label for="mood">Mood: <span id="mood-value">3</span></label>
+        <input type="range" id="mood" min="1" max="5" value="3" />
+      </div>
+      <div>
+        <label for="energy">Energy: <span id="energy-value">3</span></label>
+        <input type="range" id="energy" min="1" max="5" value="3" />
+      </div>
+    </div>
 
-    <label for="goal">Training Goal:</label>
-    <input type="text" id="goal" placeholder="Enter today's goal...">
-
-    <button id="record-btn">🎤 Record Mood (Coming Soon)</button>
-    <button id="save-session">Save Training Session</button>
+    <button id="record-btn">🎙️ Record Voice Note</button>
+    <button id="save-session">💾 Save Neuro Session</button>
   </div>
 
   <div class="section">
-    <h2>Calories Burned</h2>
-    <label for="session-type">Session Type:</label>
+    <label for="session-type">Activity Type</label>
     <select id="session-type">
       <option>Running</option>
       <option>Walking</option>
       <option>Cycling</option>
     </select>
 
-    <label for="duration">Duration (minutes):</label>
-    <input type="number" id="duration" placeholder="30">
+    <label for="duration">Duration (minutes)</label>
+    <input type="number" id="duration" placeholder="e.g. 30" />
 
-    <label for="weight">Your Weight (kg):</label>
-    <input type="number" id="weight" placeholder="e.g. 70">
+    <label for="weight">Your Weight (kg)</label>
+    <input type="number" id="weight" placeholder="e.g. 70" />
 
-    <button id="save-calorie">Calculate & Save</button>
-    <p>Calories Burned: <strong id="calories">0</strong> kcal</p>
+    <button id="save-calorie">🔥 Save Calorie Burn</button>
+    <p><strong>Calories Burned:</strong> <span id="calories">0.00</span> kcal</p>
   </div>
 
   <div class="section">
-    <h2>Training Timeline</h2>
+    <h2>🧠 Neuro Timeline</h2>
     <ul id="timeline"></ul>
   </div>
 
