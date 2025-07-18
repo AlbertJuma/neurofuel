@@ -1,12 +1,18 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom right, #0d0d0d, #1a1a1a);
-  color: #f1f1f1;
   margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: url('bg.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #000000; /* Optional: Adjust text color for readability */
+}
+.container {
+  background-color: rgba(255, 255, 255, 0.85); /* Soft white glass effect */
   padding: 20px;
-  max-width: 700px;
-  margin-inline: auto;
-  line-height: 1.6;
+  margin: 20px auto;
+  border-radius: 12px;
+  max-width: 800px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 h1, h2, h3 {
