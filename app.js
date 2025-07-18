@@ -1,53 +1,6 @@
-function saveGoal() {
-  const input = document.getElementById("goalInput").value.trim();
-  const mood = document.getElementById("moodSlider").value;
-  const energy = document.getElementById("energySlider").value;
-
-  if (!input) return alert("Write something!");
-
-  const session = {
-  date: new Date().toLocaleString(),
-  goal,
-  mood,
-  energy,
-  audio: audioPlayback.src || null,
-};
-
-
-  let logs = JSON.parse(localStorage.getItem("neuroSessions")) || [];
-  logs.unshift(session); // newest first
-  localStorage.setItem("neuroSessions", JSON.stringify(logs));
-
-  document.getElementById("goalInput").value = "";
-  renderSessions();
-}
-
-function renderSessions() {
-  const logs = JSON.parse(localStorage.getItem("neuroSessions")) || [];
-  const list = document.getElementById("sessionList");
-  list.innerHTML = "";
-
-  logs.forEach((entry, index) => {
-    const li = document.createElement("li");
-    li.className = "session-entry";
-    li.innerHTML = `
-  <strong>${entry.date}</strong><br>
-  🧠 <em>${entry.goal}</em><br>
-  Mood: ${entry.mood} / 5 &nbsp;&nbsp; Energy: ${entry.energy} / 5
-`;
- if (entry.audio) {
-  li.innerHTML += `<br><audio controls src="${entry.audio}"></audio>`;
-}
-
-    
-    
-    list.appendChild(li);
-  });
-}
-
-window.onload = renderSessions;
 let mediaRecorder;
 let audioChunks = [];
+let sessionAudio = null;
 
 const recordBtn = document.getElementById("recordBtn");
 const audioPlayback = document.getElementById("audioPlayback");
@@ -68,8 +21,6 @@ recordBtn.addEventListener("click", async () => {
       const audioUrl = URL.createObjectURL(audioBlob);
       audioPlayback.src = audioUrl;
       audioPlayback.style.display = "block";
-
-      // Save audio blob in memory as base64 string (for now)
       sessionAudio = audioUrl;
     });
 
@@ -80,13 +31,58 @@ recordBtn.addEventListener("click", async () => {
   }
 });
 
+function saveGoal() {
+  const input = document.getElementById("goalInput").value.trim();
+  const mood = document.getElementById("moodSlider").value;
+  const energy = document.getElementById("energySlider").value;
+
+  if (!input) return alert("Write something!");
+
+  const session = {
+    date: new Date().toLocaleString(),
+    goal: input,
+    mood,
+    energy,
+    audio: sessionAudio || null,
+  };
+
+  let logs = JSON.parse(localStorage.getItem("neuroSessions")) || [];
+  logs.unshift(session);
+  localStorage.setItem("neuroSessions", JSON.stringify(logs));
+
+  document.getElementById("goalInput").value = "";
+  sessionAudio = null; // reset for next session
+  renderSessions();
+  updateChart(logs);
+}
+
+function renderSessions() {
+  const logs = JSON.parse(localStorage.getItem("neuroSessions")) || [];
+  const list = document.getElementById("sessionList");
+  list.innerHTML = "";
+
+  logs.forEach((entry, index) => {
+    const li = document.createElement("li");
+    li.className = "session-entry";
+    li.innerHTML = `
+      <strong>${entry.date}</strong><br>
+      🧠 <em>${entry.goal}</em><br>
+      Mood: ${entry.mood} / 5 &nbsp;&nbsp; Energy: ${entry.energy} / 5
+    `;
+    if (entry.audio) {
+      li.innerHTML += `<br><audio controls src="${entry.audio}"></audio>`;
+    }
+    list.appendChild(li);
+  });
+}
+
 function updateChart(logs) {
   const ctx = document.getElementById('progressChart').getContext('2d');
   const dates = logs.map(entry => entry.date);
   const moods = logs.map(entry => entry.mood);
   const energy = logs.map(entry => entry.energy);
 
-  if (window.myChart) window.myChart.destroy(); // Reset previous chart
+  if (window.myChart) window.myChart.destroy();
 
   window.myChart = new Chart(ctx, {
     type: 'line',
@@ -115,5 +111,9 @@ function updateChart(logs) {
     }
   });
 }
-updateChart(logs);
 
+window.onload = () => {
+  const logs = JSON.parse(localStorage.getItem("neuroSessions")) || [];
+  renderSessions();
+  updateChart(logs);
+};
