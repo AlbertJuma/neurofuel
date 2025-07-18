@@ -1,51 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NeuroFuel</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- ✅ Move header inside body -->
-    <header style="display: flex; align-items: center; padding: 10px; background-color: #111;">
-      <img src="62333c8a-dd23-45bb-9671-db30d1387704.png" alt="Kea Jenga Logo" style="height: 60px; margin-right: 10px;" />
-      <h1 style="color: #ffffff;">Kea Jenga Progress Tracker</h1>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NeuroFuel</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
 
-    <div class="container">
-      <h1>🏃 NeuroFuel</h1>
+  <div class="container">
+    <h1>🏃 NeuroFuel</h1>
 
-      <div id="input-section">
-        <h2>What's your training goal?</h2>
-        <textarea id="goalInput" placeholder="e.g. Improve sprint start..."></textarea>
+    <div id="input-section">
+      <h2>What's your training goal?</h2>
+      <textarea id="goalInput" placeholder="e.g. Improve sprint start..."></textarea>
 
-        <h2>Progress Tracker</h2>
-        <canvas id="progressChart" width="100%" height="200"></canvas>
+      <h2>Progress Tracker</h2>
+      <canvas id="progressChart" width="100%" height="200"></canvas>
 
-        <h3>Mood Level (1 = bad, 5 = great)</h3>
-        <input type="range" min="1" max="5" value="3" id="moodSlider" />
+      <h3>Mood Level (1 = bad, 5 = great)</h3>
+      <input type="range" min="1" max="5" value="3" id="moodSlider"/>
 
-        <h3>Energy Level (1 = low, 5 = high)</h3>
-        <input type="range" min="1" max="5" value="3" id="energySlider" />
+      <h3>Energy Level (1 = low, 5 = high)</h3>
+      <input type="range" min="1" max="5" value="3" id="energySlider"/>
 
-        <label for="voiceNote">🎤 Record Voice Note:</label><br />
-        <button id="recordBtn">Start Recording</button><br />
-        <audio id="audioPlayback" controls style="display:none;"></audio>
+      <label for="voiceNote">🎤 Record Voice Note:</label><br/>
+      <button id="recordBtn">Start Recording</button><br/>
+      <audio id="audioPlayback" controls style="display:none;"></audio>
 
-        <button onclick="saveGoal()">Save Session</button>
-      </div>
-
-      <hr />
-
-      <div id="timeline-section">
-        <h2>🕓 Session Timeline</h2>
-        <ul id="sessionList"></ul>
-      </div>
+      <button onclick="saveGoal()">Save Session</button>
     </div>
 
-    <!-- 🧠 Correct script order -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="app.js"></script>
-  </body>
+    <hr/>
+
+    <div id="timeline-section">
+      <h2>🕓 Session Timeline</h2>
+      <ul id="sessionList"></ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
 </html>
