@@ -82,3 +82,31 @@ hr {
     width: 100%;
   }
 }
+/* Style for each saved session entry */
+.session-entry {
+  background: #1e1e1e;
+  color: #fff;
+  border-left: 4px solid #facc15; /* bright yellow */
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 10px;
+  animation: fadeInUp 0.3s ease forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Style enhancements for inputs */
+textarea,
+input[type="range"],
+.session-entry {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
