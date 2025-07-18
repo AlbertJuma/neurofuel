@@ -80,3 +80,40 @@ recordBtn.addEventListener("click", async () => {
   }
 });
 
+function updateChart(logs) {
+  const ctx = document.getElementById('progressChart').getContext('2d');
+  const dates = logs.map(entry => entry.date);
+  const moods = logs.map(entry => entry.mood);
+  const energy = logs.map(entry => entry.energy);
+
+  if (window.myChart) window.myChart.destroy(); // Reset previous chart
+
+  window.myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [
+        {
+          label: 'Mood',
+          data: moods,
+          borderColor: '#facc15',
+          fill: false,
+        },
+        {
+          label: 'Energy',
+          data: energy,
+          borderColor: '#38bdf8',
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true, max: 5 },
+      }
+    }
+  });
+}
+updateChart(logs);
+
