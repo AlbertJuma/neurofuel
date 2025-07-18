@@ -33,6 +33,42 @@
 
     <hr/>
 
+
+<div class="mt-6 bg-white bg-opacity-70 rounded-2xl shadow-xl p-4">
+  <h2 class="text-xl font-bold mb-2">🧠 Log New Session</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div>
+      <label class="block mb-1 font-medium">Session Type</label>
+      <select id="sessionType" class="w-full p-2 border rounded">
+        <option>Running</option>
+        <option>Gym Workout</option>
+        <option>HIIT</option>
+        <option>Yoga/Recovery</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Duration (minutes)</label>
+      <input id="duration" type="number" class="w-full p-2 border rounded" placeholder="e.g. 45">
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Your Weight (kg)</label>
+      <input id="weight" type="number" class="w-full p-2 border rounded" placeholder="e.g. 70">
+    </div>
+  </div>
+
+  <p class="mt-4 text-sm text-gray-700">
+    Estimated Energy Burned: <span id="caloriesOutput" class="font-semibold">0</span> kcal
+  </p>
+</div>
+
+
+
+
+    
+
     <div id="timeline-section">
       <h2>🕓 Session Timeline</h2>
       <ul id="sessionList"></ul>
