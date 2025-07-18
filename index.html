@@ -9,26 +9,25 @@
 <body>
   <div class="container">
     <h1>🏃 NeuroFuel</h1>
-<div id="input-section">
-  <h2>What's your training goal?</h2>
-  <textarea id="goalInput" placeholder="e.g. Improve sprint start..."></textarea>
-<h2>Progress Tracker</h2>
-<canvas id="progressChart" width="100%" height="200"></canvas>
+    <div id="input-section">
+      <h2>What's your training goal?</h2>
+      <textarea id="goalInput" placeholder="e.g. Improve sprint start..."></textarea>
 
-  <h3>Mood Level (1 = bad, 5 = great)</h3>
-  <input type="range" min="1" max="5" value="3" id="moodSlider" />
+      <h2>Progress Tracker</h2>
+      <canvas id="progressChart" width="100%" height="200"></canvas>
 
-  <h3>Energy Level (1 = low, 5 = high)</h3>
-  <input type="range" min="1" max="5" value="3" id="energySlider" />
+      <h3>Mood Level (1 = bad, 5 = great)</h3>
+      <input type="range" min="1" max="5" value="3" id="moodSlider" />
 
-  <!-- 🎤 Voice Recording Section -->
-  <label for="voiceNote">🎤 Record Voice Note:</label><br>
-  <button id="recordBtn">Start Recording</button><br>
-  <audio id="audioPlayback" controls style="display:none;"></audio>
+      <h3>Energy Level (1 = low, 5 = high)</h3>
+      <input type="range" min="1" max="5" value="3" id="energySlider" />
 
-  <!-- ✅ Save button -->
-  <button onclick="saveGoal()">Save Session</button>
-</div>
+      <label for="voiceNote">🎤 Record Voice Note:</label><br>
+      <button id="recordBtn">Start Recording</button><br>
+      <audio id="audioPlayback" controls style="display:none;"></audio>
+
+      <button onclick="saveGoal()">Save Session</button>
+    </div>
 
     <hr />
 
@@ -38,7 +37,8 @@
     </div>
   </div>
 
+  <!-- 🧠 Correct script order -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
