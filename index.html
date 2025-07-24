@@ -1,136 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Neurofuel Tracker</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f5f6fa;
-      color: #333;
-    }
-
-    h1 {
-      text-align: center;
-      color: #2f3640;
-    }
-
-    .section {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: #0984e3;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    button:hover {
-      background-color: #74b9ff;
-    }
-
-    .sliders {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .sliders div {
-      flex: 1;
-    }
-
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-
-    li {
-      background: #dfe6e9;
-      padding: 10px;
-      border-radius: 6px;
-      margin-bottom: 8px;
-    }
-
-    .small-label {
-      font-size: 0.9rem;
-      color: #636e72;
-    }
-
-    @media (max-width: 600px) {
-      .sliders {
-        flex-direction: column;
-      }
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuroFuel Speed Tracker</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Neurofuel Tracker</h1>
-
-  <div class="section">
-    <label for="goal">Today's Training Goal</label>
-    <input type="text" id="goal" placeholder="e.g. Improve focus, complete project, etc." />
-
-    <div class="sliders">
-      <div>
-        <label for="mood">Mood: <span id="mood-value">3</span></label>
-        <input type="range" id="mood" min="1" max="5" value="3" />
+  <div class="app-container">
+    <header class="header">
+      <h1>⚡ NeuroFuel Speed Tracker</h1>
+      <div class="unit-toggle">
+        <label class="switch">
+          <input type="checkbox" id="unitToggle">
+          <span class="slider">
+            <span class="unit-label">KM</span>
+            <span class="unit-label">M</span>
+          </span>
+        </label>
       </div>
-      <div>
-        <label for="energy">Energy: <span id="energy-value">3</span></label>
-        <input type="range" id="energy" min="1" max="5" value="3" />
+    </header>
+
+    <main class="main-content">
+      <!-- Stats Display -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="currentSpeed">0.0</div>
+          <div class="stat-label">Speed (<span id="speedUnit">km/h</span>)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="totalDistance">0.0</div>
+          <div class="stat-label">Distance (<span id="distanceUnit">km</span>)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="sessionTime">00:00:00</div>
+          <div class="stat-label">Session Time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="avgSpeed">0.0</div>
+          <div class="stat-label">Avg Speed (<span id="avgSpeedUnit">km/h</span>)</div>
+        </div>
       </div>
-    </div>
 
-    <button id="record-btn">🎙️ Record Voice Note</button>
-    <button id="save-session">💾 Save Neuro Session</button>
-  </div>
+      <!-- Kilometer Split Info -->
+      <div class="split-info" id="splitInfo" style="display: none;">
+        <div class="split-title">Last Kilometer Split</div>
+        <div class="split-details">
+          <span id="splitTime">00:00</span> • <span id="splitSpeed">0.0 km/h</span>
+        </div>
+      </div>
 
-  <div class="section">
-    <label for="session-type">Activity Type</label>
-    <select id="session-type">
-      <option>Running</option>
-      <option>Walking</option>
-      <option>Cycling</option>
-    </select>
+      <!-- Map Container -->
+      <div class="map-container">
+        <div id="map">
+          <div class="map-placeholder">
+            <div class="map-info">
+              <h3>📍 GPS Tracking Active</h3>
+              <p id="mapStatus">Waiting for GPS signal...</p>
+              <div id="pathInfo">
+                <p>Current Position: <span id="currentPos">Unknown</span></p>
+                <p>Path Points: <span id="pathPoints">0</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <label for="duration">Duration (minutes)</label>
-    <input type="number" id="duration" placeholder="e.g. 30" />
+      <!-- Control Buttons -->
+      <div class="controls">
+        <button id="startBtn" class="btn btn-start">▶ Start</button>
+        <button id="stopBtn" class="btn btn-stop" disabled>⏸ Stop</button>
+        <button id="saveBtn" class="btn btn-save" disabled>💾 Save</button>
+        <button id="historyBtn" class="btn btn-secondary">📊 History</button>
+      </div>
 
-    <label for="weight">Your Weight (kg)</label>
-    <input type="number" id="weight" placeholder="e.g. 70" />
+      <!-- Save Session Modal -->
+      <div id="saveModal" class="modal">
+        <div class="modal-content">
+          <h3>Save Session</h3>
+          <textarea id="sessionNotes" placeholder="Add notes about this session..."></textarea>
+          <div class="modal-buttons">
+            <button id="saveSessionBtn" class="btn btn-primary">Save Session</button>
+            <button id="cancelSaveBtn" class="btn btn-secondary">Cancel</button>
+          </div>
+        </div>
+      </div>
 
-    <button id="save-calorie">🔥 Save Calorie Burn</button>
-    <p><strong>Calories Burned:</strong> <span id="calories">0.00</span> kcal</p>
-  </div>
-
-  <div class="section">
-    <h2>🧠 Neuro Timeline</h2>
-    <ul id="timeline"></ul>
+      <!-- History Modal -->
+      <div id="historyModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Session History</h3>
+            <button id="clearHistoryBtn" class="btn btn-danger">Clear All</button>
+          </div>
+          <div id="historyList" class="history-list">
+            <p class="no-sessions">No sessions recorded yet.</p>
+          </div>
+          <button id="closeHistoryBtn" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </main>
   </div>
 
   <script src="app.js"></script>
